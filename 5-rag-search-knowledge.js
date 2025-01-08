@@ -1,6 +1,5 @@
-import {pgClient, embeddingModel, llmModel} from "./config.js";
+import {alloyDBClient, embeddingModel, llmModel} from "./config.js";
 
-// RAG Function
 const ragSearch = async () => {
     const testPhrase = "Could you tell me what are the best features to clean my kitchen?";
 
@@ -9,18 +8,18 @@ const ragSearch = async () => {
     const testPhraseVector = embeddingRequest.embedding.values;
 
     // Step 2: Retrieve relevant context from PostgreSQL using PGVector
-    await pgClient.connect();
+    await alloyDBClient.connect();
     let retrievedContext = "";
 
     try {
-        const pgResponse = await pgClient.query(
+        const pgResponse = await alloyDBClient.query(
             `SELECT * FROM features ORDER BY embedding <-> '${JSON.stringify(testPhraseVector)}' LIMIT 2;`);
 
         retrievedContext = pgResponse.rows.map(row => row.description).join("\n");
     } catch (err) {
         console.error("Error during PGVector search:", err);
     } finally {
-        await pgClient.end();
+        await alloyDBClient.end();
     }
 
     if (!retrievedContext) {

@@ -1,12 +1,12 @@
-import {pgClient} from "./config.js";
+import {alloyDBClient} from "./config.js";
 
 // Create table
 // run with:
 // node create-features-table
 const createTable = async () => {
-    await pgClient.connect();
+    await alloyDBClient.connect();
     try {
-        const pgResponse = await pgClient.query(`CREATE TABLE features (
+        const pgResponse = await alloyDBClient.query(`CREATE TABLE features (
             description TEXT,
             embedding vector(768)
         );
@@ -15,7 +15,7 @@ const createTable = async () => {
     } catch (err) {
         console.error(err);
     } finally {
-        await pgClient.end();
+        await alloyDBClient.end();
     }
 };
 

@@ -2,7 +2,7 @@ import {pgp, pgpClient, embeddingModel} from "./config.js";
 
 import features from './features.json' assert { type: "json" };
 
-async function run() {
+async function populate() {
     const columns =
         new pgp.helpers.ColumnSet(['description', 'embedding'],
             {table: 'features'});
@@ -24,4 +24,4 @@ async function run() {
     pgpClient.none(query).then();
 }
 
-await run();
+await populate();

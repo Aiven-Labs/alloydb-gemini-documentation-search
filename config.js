@@ -11,7 +11,7 @@ export const llmModel = genAI.getGenerativeModel({ model: "gemini-1.5-flash"});
 
 // Connecting to cloud-based PostgreSQL using credentials and ca.pem
 // Configuration settings are taken from .env
-export const config = {
+const config = {
     user: process.env.ALLOY_DB_USER,
     password: process.env.ALLOY_DB_PASSWORD,
     host: process.env.ALLOY_DB_HOST,
@@ -23,7 +23,7 @@ export const config = {
     },
 };
 
-export const pgClient = new pg.Client(config);
+export const alloyDBClient = new pg.Client(config);
 
 export const pgp = pgPromise({
     capSQL: true // capitalize all generated SQL
